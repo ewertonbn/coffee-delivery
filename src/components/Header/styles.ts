@@ -3,13 +3,20 @@ import styled from 'styled-components'
 import { mixins } from '../../styles/mixins'
 
 export const Container = styled.header`
-  max-width: 72.5rem;
-  margin: 0 auto;
-  padding: 2rem 1.25rem;
+  padding: 2rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: ${(props) => props.theme.colors.background};
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  & > div {
+    max-width: 72.5rem;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 `
 
 export const HeaderMenu = styled.div`

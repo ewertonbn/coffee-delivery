@@ -1,24 +1,21 @@
 import { useState } from 'react'
 import { ShoppingCartSimple } from 'phosphor-react'
 
+import { Product } from '../../pages/Home'
 import { QuantityInput } from '../QuantityInput'
 
 import { ButtonAddCart, CardBox, Footer, Price, Tags } from './styled'
 
-interface Card {
-  id: string
-  title: string
-  description: string
-  tags: string[]
-  price: number
-  image: string
+interface Cart {
+  coffee: Product
+  quantity: number
 }
-
 interface CardProps {
-  data: Card
+  coffee: Product
+  addToCart: (data: Cart) => void
 }
 
-export function Card({ data }: CardProps) {
+export function Card({ coffee, addToCart }: CardProps) {
   const [quantity, setQuantity] = useState<number>(1)
 
   function handleIncrement() {
@@ -31,25 +28,27 @@ export function Card({ data }: CardProps) {
 
   function handleAddToCart() {
     const newItemCart = {
-      data,
+      coffee,
       quantity,
     }
-    console.log(newItemCart)
+
+    addToCart(newItemCart)
+    setQuantity(1)
   }
 
   return (
     <CardBox>
-      <img src={data.image} alt={data.title} />
+      <img src={coffee.image} alt={coffee.title} />
       <Tags>
-        {data.tags.map((tag) => {
+        {coffee.tags.map((tag) => {
           return <span key={tag}>{tag}</span>
         })}
       </Tags>
-      <h3>{data.title}</h3>
-      <p>{data.description}</p>
+      <h3>{coffee.title}</h3>
+      <p>{coffee.description}</p>
       <Footer>
         <Price>
-          <span>R$</span> {data.price.toFixed(2)}
+          <span>R$</span> {coffee.price.toFixed(2)}
         </Price>
         <div>
           <QuantityInput
@@ -57,7 +56,7 @@ export function Card({ data }: CardProps) {
             decrement={handleDecrement}
             quantity={quantity}
           />
-          <ButtonAddCart type="button" id={data.id} onClick={handleAddToCart}>
+          <ButtonAddCart type="button" id={coffee.id} onClick={handleAddToCart}>
             <ShoppingCartSimple weight="fill" size={22} />
           </ButtonAddCart>
         </div>
