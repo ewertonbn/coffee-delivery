@@ -1,22 +1,18 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ShoppingCartSimple } from 'phosphor-react'
 
-import { Product } from '../../pages/Home'
+import { CartContext, Product } from '../../contexts/CartProvider'
 import { QuantityInput } from '../QuantityInput'
 
 import { ButtonAddCart, CardBox, Footer, Price, Tags } from './styled'
 
-interface Cart {
-  coffee: Product
-  quantity: number
-}
 interface CardProps {
   coffee: Product
-  addToCart: (data: Cart) => void
 }
 
-export function Card({ coffee, addToCart }: CardProps) {
+export function Card({ coffee }: CardProps) {
   const [quantity, setQuantity] = useState<number>(1)
+  const { addToCart } = useContext(CartContext)
 
   function handleIncrement() {
     setQuantity((state) => state + 1)
@@ -40,7 +36,7 @@ export function Card({ coffee, addToCart }: CardProps) {
     <CardBox>
       <img src={coffee.image} alt={coffee.title} />
       <Tags>
-        {coffee.tags.map((tag) => {
+        {coffee.tags.map((tag: string) => {
           return <span key={tag}>{tag}</span>
         })}
       </Tags>

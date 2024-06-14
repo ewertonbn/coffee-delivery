@@ -42,7 +42,7 @@ export const Location = styled.button`
 `
 
 interface ButtonCartProps {
-  $items: string
+  $items: number
 }
 
 export const ButtonCart = styled.button<ButtonCartProps>`

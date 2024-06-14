@@ -1,10 +1,14 @@
+import { useContext } from 'react'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 
 import logoImg from '../../../public/logo.svg'
+import { CartContext } from '../../contexts/CartProvider'
 
 import { ButtonCart, Container, HeaderMenu, Location } from './styles'
 
 export function Header() {
+  const { cart } = useContext(CartContext)
+
   return (
     <Container>
       <div>
@@ -17,7 +21,7 @@ export function Header() {
             <MapPin size={22} weight="fill" />
             <span>Praia Grande, SP</span>
           </Location>
-          <ButtonCart $items="3">
+          <ButtonCart $items={cart.length}>
             <ShoppingCart size={22} weight="fill" />
           </ButtonCart>
         </HeaderMenu>
