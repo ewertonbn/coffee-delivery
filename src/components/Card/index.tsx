@@ -19,16 +19,19 @@ export function Card({ coffee }: CardProps) {
   }
 
   function handleDecrement() {
-    setQuantity((state) => state - 1)
+    if (quantity > 1) {
+      setQuantity((state) => state - 1)
+    }
   }
 
   function handleAddToCart() {
-    const newItemCart = {
-      coffee,
+    const newItem = {
+      id: coffee.id,
+      title: coffee.title,
       quantity,
     }
 
-    addToCart(newItemCart)
+    addToCart(newItem)
     setQuantity(1)
   }
 

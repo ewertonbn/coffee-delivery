@@ -10,14 +10,15 @@ export interface Product {
   image: string
 }
 
-interface Cart {
-  coffee: Product
+export interface Item {
+  id: string
+  title: string
   quantity: number
 }
 
 interface CartContextProps {
-  cart: Cart[]
-  addToCart: (coffeeItem: Cart) => void
+  cart: Item[]
+  addToCart: (item: Item) => void
 }
 
 interface CartContextProviderProps {
@@ -27,7 +28,7 @@ interface CartContextProviderProps {
 export const CartContext = createContext({} as CartContextProps)
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cart, setCart] = useState<Cart[]>(() => {
+  const [cart, setCart] = useState<Item[]>(() => {
     const storedCart = localStorage.getItem('@coffee-delivery:cart-state-1.0.0')
 
     if (storedCart) {
@@ -38,21 +39,19 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   })
   console.log(cart)
 
-  function addToCart(coffeeItem: Cart) {
-    const itemAlreadyAdded = cart.find(
-      (item) => item.coffee.id === coffeeItem.coffee.id,
-    )
+  function addToCart(item: Item) {
+    const itemAlreadyAdded = cart.find((itemCart) => itemCart.id === item.id)
 
     if (itemAlreadyAdded) {
-      itemAlreadyAdded.quantity += coffeeItem.quantity
+      itemAlreadyAdded.quantity += item.quantity
       toast.success(
-        `+ ${coffeeItem.quantity} ${coffeeItem.coffee.title} adicionado ao carrinho!`,
+        `+ ${item.quantity} ${item.title} adicionado ao carrinho!`,
         { duration: 4000 },
       )
     } else {
-      setCart((state) => [...state, coffeeItem])
+      setCart((state) => [...state, item])
       toast.success(
-        `+ ${coffeeItem.quantity} ${coffeeItem.coffee.title} adicionado ao carrinho!`,
+        `+ ${item.quantity} ${item.title} adicionado ao carrinho!`,
         { duration: 4000 },
       )
     }

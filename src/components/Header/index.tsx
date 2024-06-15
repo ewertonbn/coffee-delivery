@@ -21,7 +21,7 @@ export function Header() {
             <MapPin size={22} weight="fill" />
             <span>Praia Grande, SP</span>
           </Location>
-          <ButtonCart $items={cart.length}>
+          <ButtonCart to="cart" $items={cart.length}>
             <ShoppingCart size={22} weight="fill" />
           </ButtonCart>
         </HeaderMenu>

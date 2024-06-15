@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { mixins } from '../../styles/mixins'
@@ -45,7 +46,7 @@ interface ButtonCartProps {
   $items: number
 }
 
-export const ButtonCart = styled.button<ButtonCartProps>`
+export const ButtonCart = styled(Link)<ButtonCartProps>`
   display: flex;
   align-items: center;
   justify-content: center;
