@@ -37,7 +37,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       return []
     }
   })
-  console.log(cart)
+  // console.log(cart)
 
   function addToCart(item: Item) {
     const itemAlreadyAdded = cart.find((itemCart) => itemCart.id === item.id)

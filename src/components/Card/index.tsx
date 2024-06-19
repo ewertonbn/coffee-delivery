@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import { ShoppingCartSimple } from 'phosphor-react'
 
 import { CartContext, Product } from '../../contexts/CartProvider'
-import { QuantityInput } from '../QuantityInput'
+import { QuantityInput } from '../Form/QuantityInput'
 
 import { ButtonAddCart, CardBox, Footer, Price, Tags } from './styled'
 
