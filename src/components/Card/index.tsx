@@ -51,8 +51,8 @@ export function Card({ coffee }: CardProps) {
         </Price>
         <div>
           <QuantityInput
-            increment={handleIncrement}
-            decrement={handleDecrement}
+            incrementQuantity={handleIncrement}
+            decrementQuantity={handleDecrement}
             quantity={quantity}
           />
           <ButtonAddCart type="button" id={coffee.id} onClick={handleAddToCart}>

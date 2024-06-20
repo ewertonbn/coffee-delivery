@@ -11,5 +11,16 @@ export const Quantity = styled.div`
 
   button {
     background: transparent;
+
+    &:hover {
+      svg {
+        color: ${(props) => props.theme.colors['purple-dark']};
+      }
+    }
+
+    svg {
+      color: ${(props) => props.theme.colors.purple};
+      transition: all 0.2s;
+    }
   }
 `

@@ -4,23 +4,23 @@ import { Quantity } from './styled'
 
 interface QuantityInputProps {
   quantity: number
-  increment: () => void
-  decrement: () => void
+  incrementQuantity: () => void
+  decrementQuantity: () => void
 }
 
 export function QuantityInput({
-  decrement,
-  increment,
+  decrementQuantity,
+  incrementQuantity,
   quantity,
 }: QuantityInputProps) {
   return (
     <Quantity>
-      <button type="button" onClick={decrement}>
-        <Minus size={14} />
+      <button type="button" onClick={decrementQuantity}>
+        <Minus size={14} weight="bold" />
       </button>
       <span>{quantity}</span>
-      <button type="button" onClick={increment}>
-        <Plus size={14} />
+      <button type="button" onClick={incrementQuantity}>
+        <Plus size={14} weight="bold" />
       </button>
     </Quantity>
   )

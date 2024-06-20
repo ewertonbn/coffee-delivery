@@ -16,6 +16,7 @@ import { QuantityInput } from '../../components/Form/QuantityInput'
 import { Radio } from '../../components/Form/Radio'
 import { TextInput } from '../../components/Form/TextInput'
 import { CartContext } from '../../contexts/CartProvider'
+import { formatValueCurrency } from '../../utils/formatValueCurrency'
 
 import {
   AddressContainer,
@@ -89,10 +90,24 @@ export function Cart() {
     }
   })
 
+  const totalPriceItemsCart = coffeesInCart.reduce((acc, item) => {
+    return item.quantity * item.price + acc
+  }, 0)
+
+  const shippingValue = 3.5
+
   function handleCreateNewOrder(data: newOrderData) {
     console.log(data)
 
     reset()
+  }
+
+  function handleItemIncrement(itemId: string) {
+    console.log(itemId)
+  }
+
+  function handleItemDecrement(itemId: string) {
+    console.log(itemId)
   }
 
   return (
@@ -216,8 +231,12 @@ export function Cart() {
                       <CoffeTitle>{coffee.title}</CoffeTitle>
                       <Control>
                         <QuantityInput
-                          // increment={}
-                          // decrement={}
+                          incrementQuantity={() =>
+                            handleItemIncrement(coffee.id)
+                          }
+                          decrementQuantity={() =>
+                            handleItemDecrement(coffee.id)
+                          }
                           quantity={coffee.quantity}
                         />
                         <button type="button">
@@ -227,7 +246,7 @@ export function Cart() {
                       </Control>
                     </div>
                   </div>
-                  <span>R$ {coffee.price.toFixed(2)}</span>
+                  <span>{formatValueCurrency(coffee.price)}</span>
                 </Coffee>
               )
             })}
@@ -235,15 +254,17 @@ export function Cart() {
           <Info>
             <div>
               <p>Total de itens</p>
-              <span>R$ 29,70</span>
+              <span>{formatValueCurrency(totalPriceItemsCart)}</span>
             </div>
             <div>
               <p>Entrega</p>
-              <span>R$ 3,50</span>
+              <span>{formatValueCurrency(shippingValue)}</span>
             </div>
             <div>
               <p>Total</p>
-              <span>R$ 33,20</span>
+              <span>
+                {formatValueCurrency(totalPriceItemsCart + shippingValue)}
+              </span>
             </div>
           </Info>
           <ButtonCheckout type="submit" form="order">
