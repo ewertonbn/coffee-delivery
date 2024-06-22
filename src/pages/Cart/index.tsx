@@ -51,7 +51,8 @@ const newOrderValidationSchema = zod.object({
 type newOrderData = zod.infer<typeof newOrderValidationSchema>
 
 export function Cart() {
-  const { cart } = useContext(CartContext)
+  const { cart, removeFromCart, incrementItemQuantity, decrementItemQuantity } =
+    useContext(CartContext)
 
   const newOrderForm = useForm<newOrderData>({
     resolver: zodResolver(newOrderValidationSchema),
@@ -97,17 +98,24 @@ export function Cart() {
   const shippingValue = 3.5
 
   function handleCreateNewOrder(data: newOrderData) {
+    if (cart.length === 0) {
+      return alert('É necessário adicionar pelo menos um café ao carrinho')
+    }
     console.log(data)
 
     reset()
   }
 
+  function handleRemoveFromCart(itemId: string) {
+    removeFromCart(itemId)
+  }
+
   function handleItemIncrement(itemId: string) {
-    console.log(itemId)
+    incrementItemQuantity(itemId)
   }
 
   function handleItemDecrement(itemId: string) {
-    console.log(itemId)
+    decrementItemQuantity(itemId)
   }
 
   return (
@@ -231,15 +239,18 @@ export function Cart() {
                       <CoffeTitle>{coffee.title}</CoffeTitle>
                       <Control>
                         <QuantityInput
+                          quantity={coffee.quantity}
                           incrementQuantity={() =>
                             handleItemIncrement(coffee.id)
                           }
                           decrementQuantity={() =>
                             handleItemDecrement(coffee.id)
                           }
-                          quantity={coffee.quantity}
                         />
-                        <button type="button">
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFromCart(coffee.id)}
+                        >
                           <Trash size={16} />
                           <span>Remover</span>
                         </button>

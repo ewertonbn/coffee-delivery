@@ -9,9 +9,9 @@ interface QuantityInputProps {
 }
 
 export function QuantityInput({
-  decrementQuantity,
-  incrementQuantity,
   quantity,
+  incrementQuantity,
+  decrementQuantity,
 }: QuantityInputProps) {
   return (
     <Quantity>

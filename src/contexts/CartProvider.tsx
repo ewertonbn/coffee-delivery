@@ -19,6 +19,9 @@ export interface Item {
 interface CartContextProps {
   cart: Item[]
   addToCart: (item: Item) => void
+  removeFromCart: (itemId: string) => void
+  incrementItemQuantity: (itemId: string) => void
+  decrementItemQuantity: (itemId: string) => void
 }
 
 interface CartContextProviderProps {
@@ -37,7 +40,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       return []
     }
   })
-  // console.log(cart)
+  console.log(cart)
 
   function addToCart(item: Item) {
     const itemAlreadyAdded = cart.find((itemCart) => itemCart.id === item.id)
@@ -57,6 +60,32 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     }
   }
 
+  function removeFromCart(itemId: string) {
+    const itemAlreadyRemoved = cart.filter((itemCart) => itemCart.id === itemId)
+
+    setCart(itemAlreadyRemoved)
+  }
+
+  function incrementItemQuantity(itemId: string) {
+    const updateCart = [...cart]
+    const itemToIncrement = cart.find((item) => item.id === itemId)
+
+    if (itemToIncrement) {
+      itemToIncrement.quantity += 1
+      setCart(updateCart)
+    }
+  }
+
+  function decrementItemQuantity(itemId: string) {
+    const updateCart = [...cart]
+    const itemToDecrement = cart.find((item) => item.id === itemId)
+
+    if (itemToDecrement?.id) {
+      itemToDecrement.quantity -= 1
+      setCart(updateCart)
+    }
+  }
+
   useEffect(() => {
     localStorage.setItem(
       '@coffee-delivery:cart-state-1.0.0',
@@ -65,7 +94,15 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   }, [cart])
 
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        incrementItemQuantity,
+        decrementItemQuantity,
+      }}
+    >
       {children}
     </CartContext.Provider>
   )
