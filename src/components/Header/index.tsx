@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 
 import logoImg from '../../../public/logo.svg'
@@ -12,10 +13,12 @@ export function Header() {
   return (
     <Container>
       <div>
-        <img
-          src={logoImg}
-          alt="Um copo de café com um foguete no meio, que represente o Coffee Delivery"
-        />
+        <Link to="/">
+          <img
+            src={logoImg}
+            alt="Um copo de café com um foguete no meio, que represente o Coffee Delivery"
+          />
+        </Link>
         <HeaderMenu>
           <Location>
             <MapPin size={22} weight="fill" />

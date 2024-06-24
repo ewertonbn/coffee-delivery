@@ -1,8 +1,11 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Bank,
+  CircleNotch,
   CreditCard,
   CurrencyDollar,
   MapPinLine,
@@ -25,10 +28,13 @@ import {
   ButtonCheckout,
   CartTotal,
   Coffee,
+  CoffeeContent,
   CoffeeList,
+  CoffeePrice,
   CoffeTitle,
   Container,
   Control,
+  Empty,
   Info,
   InfoContainer,
   PaymentContainer,
@@ -38,23 +44,32 @@ import {
 } from './styles'
 
 const newOrderValidationSchema = zod.object({
-  cep: zod.number().min(1, 'Informe o CEP'),
-  street: zod.string().min(1, 'Informe a rua'),
-  number: zod.string().min(1, 'Informe o número'),
+  cep: zod.number().min(1, 'Obrigatório'),
+  street: zod.string().min(1, 'Obrigatório'),
+  number: zod.string().min(1, 'Obrigatório'),
   fullAddress: zod.string().optional(),
-  neighborhood: zod.string().min(1, 'Informe o bairro'),
-  city: zod.string().min(1, 'Informe a cidade'),
-  state: zod.string().min(1, 'Informe o estado'),
-  paymentMethod: zod.string(),
+  neighborhood: zod.string().min(1, 'Obrigatório'),
+  city: zod.string().min(1, 'Obrigatório'),
+  state: zod.string().min(1, 'Obrigatório'),
+  paymentMethod: zod.enum(['credit', 'debit', 'cash'], {
+    invalid_type_error: 'Informe um método de pagamento',
+  }),
 })
 
-type newOrderData = zod.infer<typeof newOrderValidationSchema>
+export type OrderInfo = zod.infer<typeof newOrderValidationSchema>
 
 export function Cart() {
-  const { cart, removeFromCart, incrementItemQuantity, decrementItemQuantity } =
-    useContext(CartContext)
+  const {
+    cart,
+    removeFromCart,
+    incrementItemQuantity,
+    decrementItemQuantity,
+    checkout,
+  } = useContext(CartContext)
 
-  const newOrderForm = useForm<newOrderData>({
+  const [isLoading, setIsLoading] = useState(false)
+
+  const newOrderForm = useForm<OrderInfo>({
     resolver: zodResolver(newOrderValidationSchema),
     defaultValues: {
       cep: 0,
@@ -64,7 +79,6 @@ export function Cart() {
       neighborhood: '',
       city: '',
       state: '',
-      paymentMethod: '',
     },
   })
 
@@ -97,12 +111,15 @@ export function Cart() {
 
   const shippingValue = 3.5
 
-  function handleCreateNewOrder(data: newOrderData) {
+  function handleCreateNewOrder(data: OrderInfo) {
     if (cart.length === 0) {
-      return alert('É necessário adicionar pelo menos um café ao carrinho')
+      return toast.error(
+        'É necessário adicionar pelo menos um café ao carrinho',
+      )
     }
-    console.log(data)
 
+    setIsLoading(true)
+    checkout(data)
     reset()
   }
 
@@ -117,6 +134,22 @@ export function Cart() {
   function handleItemDecrement(itemId: string) {
     decrementItemQuantity(itemId)
   }
+
+  useEffect(() => {
+    let timeout: number
+
+    if (isLoading) {
+      timeout = setTimeout(() => {
+        setIsLoading(false)
+      }, 1000)
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [isLoading])
 
   return (
     <Container>
@@ -229,39 +262,51 @@ export function Cart() {
       <InfoContainer>
         <h2>Cafés selecionados</h2>
         <CartTotal>
-          <CoffeeList>
-            {coffeesInCart.map((coffee) => {
-              return (
-                <Coffee key={coffee.id}>
-                  <div>
-                    <img src={coffee.image} alt={coffee.title} />
-                    <div>
-                      <CoffeTitle>{coffee.title}</CoffeTitle>
-                      <Control>
-                        <QuantityInput
-                          quantity={coffee.quantity}
-                          incrementQuantity={() =>
-                            handleItemIncrement(coffee.id)
-                          }
-                          decrementQuantity={() =>
-                            handleItemDecrement(coffee.id)
-                          }
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveFromCart(coffee.id)}
-                        >
-                          <Trash size={16} />
-                          <span>Remover</span>
-                        </button>
-                      </Control>
-                    </div>
-                  </div>
-                  <span>{formatValueCurrency(coffee.price)}</span>
-                </Coffee>
-              )
-            })}
-          </CoffeeList>
+          {cart.length !== 0 ? (
+            <CoffeeList>
+              {coffeesInCart.map((coffee) => {
+                return (
+                  <Coffee key={coffee.id}>
+                    <CoffeeContent>
+                      <img src={coffee.image} alt={coffee.title} />
+                      <div>
+                        <CoffeTitle>{coffee.title}</CoffeTitle>
+                        <Control>
+                          <QuantityInput
+                            quantity={coffee.quantity}
+                            incrementQuantity={() =>
+                              handleItemIncrement(coffee.id)
+                            }
+                            decrementQuantity={() =>
+                              handleItemDecrement(coffee.id)
+                            }
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveFromCart(coffee.id)}
+                          >
+                            <Trash size={16} />
+                            <span>Remover</span>
+                          </button>
+                        </Control>
+                      </div>
+                    </CoffeeContent>
+                    <CoffeePrice>
+                      <span>{formatValueCurrency(coffee.price)}</span>
+                      <span>
+                        {formatValueCurrency(coffee.price * coffee.quantity)}
+                      </span>
+                    </CoffeePrice>
+                  </Coffee>
+                )
+              })}
+            </CoffeeList>
+          ) : (
+            <Empty>
+              <p>Você não tem nenhum café em seu carrinho!</p>
+              <Link to="/#nossos-cafes">Escolher um café</Link>
+            </Empty>
+          )}
           <Info>
             <div>
               <p>Total de itens</p>
@@ -279,7 +324,7 @@ export function Cart() {
             </div>
           </Info>
           <ButtonCheckout type="submit" form="order">
-            Confirmar pedido
+            {!isLoading ? 'Confirmar pedido' : <CircleNotch size={22} />}
           </ButtonCheckout>
         </CartTotal>
       </InfoContainer>

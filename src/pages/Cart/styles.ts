@@ -85,6 +85,7 @@ export const PaymentErrorMessage = styled.p`
   ${mixins.fonts.textXS};
   font-weight: 400;
   color: red;
+  margin-top: 8px;
 `
 
 export const CartTotal = styled(DefaultContainer)`
@@ -93,10 +94,50 @@ export const CartTotal = styled(DefaultContainer)`
   border-radius: 6px 44px 6px 44px;
 `
 
+export const Empty = styled.div`
+  & > p {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  & > a {
+    margin: 0 auto;
+    display: flex;
+    width: fit-content;
+    padding: 8px 12px;
+    background: ${(props) => props.theme.colors['purple-light']};
+    color: ${(props) => props.theme.colors['purple-dark']};
+    border-radius: 6px;
+    text-decoration: none;
+  }
+`
+
 export const CoffeeList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  padding-right: 0.5rem;
+  max-height: 21.875rem;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${(props) => props.theme.colors['base-button']};
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.colors.yellow};
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => props.theme.colors['yellow-dark']};
+  }
 `
 
 export const Coffee = styled.div`
@@ -118,26 +159,38 @@ export const Coffee = styled.div`
       background: ${(props) => props.theme.colors['base-button']};
     }
   }
+`
 
-  & > div {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
+export const CoffeeContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 
-    img {
-      max-width: 4rem;
-    }
-  }
-
-  & > span {
-    ${mixins.fonts.textM}
-    font-weight: 700;
+  img {
+    max-width: 4rem;
   }
 `
 
 export const CoffeTitle = styled.p`
   ${mixins.fonts.textM}
   color: ${(props) => props.theme.colors['base-subtitle']};
+`
+
+export const CoffeePrice = styled.div`
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 0;
+
+  span {
+    ${mixins.fonts.textM}
+    font-weight: 700;
+
+    &:last-child {
+      ${mixins.fonts.textXS}
+      color: ${(props) => props.theme.colors.purple};
+    }
+  }
 `
 
 export const Control = styled.div`
@@ -217,5 +270,15 @@ export const ButtonCheckout = styled.button`
 
   &:hover {
     background: ${(props) => props.theme.colors['yellow-dark']};
+  }
+
+  svg {
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `

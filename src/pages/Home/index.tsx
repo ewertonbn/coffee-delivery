@@ -60,7 +60,7 @@ export function Home() {
         </HeroContainer>
       </HeroSection>
 
-      <CoffeeList>
+      <CoffeeList id="nossos-cafes">
         <h2>Nossos cafés</h2>
         <div>
           {coffees.map((coffee) => {

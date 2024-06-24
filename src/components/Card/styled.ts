@@ -86,4 +86,14 @@ export const ButtonAddCart = styled.button`
   &:hover {
     background: ${(props) => props.theme.colors.purple};
   }
+
+  svg#spinner {
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `

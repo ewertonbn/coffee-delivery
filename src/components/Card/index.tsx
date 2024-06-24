@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react'
-import { ShoppingCartSimple } from 'phosphor-react'
+import { useContext, useEffect, useState } from 'react'
+import { CircleNotch, ShoppingCartSimple } from 'phosphor-react'
 
 import { CartContext, Product } from '../../contexts/CartProvider'
 import { QuantityInput } from '../Form/QuantityInput'
@@ -11,6 +11,7 @@ interface CardProps {
 }
 
 export function Card({ coffee }: CardProps) {
+  const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState<number>(1)
   const { addToCart } = useContext(CartContext)
 
@@ -25,6 +26,8 @@ export function Card({ coffee }: CardProps) {
   }
 
   function handleAddToCart() {
+    setIsLoading(true)
+
     const newItem = {
       id: coffee.id,
       title: coffee.title,
@@ -34,6 +37,22 @@ export function Card({ coffee }: CardProps) {
     addToCart(newItem)
     setQuantity(1)
   }
+
+  useEffect(() => {
+    let timeout: number
+
+    if (isLoading) {
+      timeout = setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [isLoading])
 
   return (
     <CardBox>
@@ -56,7 +75,11 @@ export function Card({ coffee }: CardProps) {
             quantity={quantity}
           />
           <ButtonAddCart type="button" id={coffee.id} onClick={handleAddToCart}>
-            <ShoppingCartSimple weight="fill" size={22} />
+            {!isLoading ? (
+              <ShoppingCartSimple weight="fill" size={22} />
+            ) : (
+              <CircleNotch id="spinner" size={22} />
+            )}
           </ButtonAddCart>
         </div>
       </Footer>
