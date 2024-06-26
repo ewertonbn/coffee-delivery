@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 import { OrderInfo } from '../pages/Cart'
 
@@ -18,7 +19,7 @@ export interface Item {
   quantity: number
 }
 
-interface Order {
+export interface Order {
   id: number
   items: Item[]
   order: OrderInfo
@@ -53,6 +54,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       return []
     }
   })
+
+  const navigate = useNavigate()
 
   function addToCart(item: Item) {
     const itemAlreadyAdded = cart.find((itemCart) => itemCart.id === item.id)
@@ -109,6 +112,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
 
     setOrders((state) => [...state, newOrder])
     setCart([])
+
+    navigate(`/order/${newOrder.id}/success`)
   }
 
   useEffect(() => {
