@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CircleNotch, ShoppingCartSimple } from 'phosphor-react'
 
-import { CartContext, Product } from '../../contexts/CartProvider'
+import { Product } from '../../contexts/CartProvider'
+import { useCart } from '../../hooks/useCart'
 import { QuantityInput } from '../Form/QuantityInput'
 
 import { ButtonAddCart, CardBox, Footer, Price, Tags } from './styled'
@@ -13,7 +14,7 @@ interface CardProps {
 export function Card({ coffee }: CardProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState<number>(1)
-  const { addToCart } = useContext(CartContext)
+  const { addToCart } = useCart()
 
   function handleIncrement() {
     setQuantity((state) => state + 1)

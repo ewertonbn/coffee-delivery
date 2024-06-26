@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
@@ -18,7 +18,7 @@ import { coffees } from '../../../data.json'
 import { QuantityInput } from '../../components/Form/QuantityInput'
 import { Radio } from '../../components/Form/Radio'
 import { TextInput } from '../../components/Form/TextInput'
-import { CartContext } from '../../contexts/CartProvider'
+import { useCart } from '../../hooks/useCart'
 import { formatValueCurrency } from '../../utils/formatValueCurrency'
 
 import {
@@ -65,7 +65,7 @@ export function Cart() {
     incrementItemQuantity,
     decrementItemQuantity,
     checkout,
-  } = useContext(CartContext)
+  } = useCart()
 
   const [isLoading, setIsLoading] = useState(false)
 

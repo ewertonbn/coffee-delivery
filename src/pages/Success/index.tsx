@@ -1,10 +1,10 @@
-import { useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 import { useTheme } from 'styled-components'
 
 import deliveryImg from '../../../public/images/delivery.svg'
-import { CartContext, Order } from '../../contexts/CartProvider'
+import { Order } from '../../contexts/CartProvider'
+import { useCart } from '../../hooks/useCart'
 
 import { Box, BoxContent, Container, Content } from './styles'
 
@@ -13,7 +13,7 @@ type OrderParams = {
 }
 
 export function Success() {
-  const { orders } = useContext(CartContext)
+  const { orders } = useCart()
   const { orderId } = useParams<OrderParams>()
 
   const orderData: Order = orders.find(
