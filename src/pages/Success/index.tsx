@@ -3,8 +3,8 @@ import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 import { useTheme } from 'styled-components'
 
 import deliveryImg from '../../../public/images/delivery.svg'
-import { Order } from '../../contexts/CartProvider'
 import { useCart } from '../../hooks/useCart'
+import { Order } from '../../reducers/cart/reducer'
 
 import { Box, BoxContent, Container, Content } from './styles'
 

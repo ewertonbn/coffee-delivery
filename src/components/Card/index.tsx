@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { CircleNotch, ShoppingCartSimple } from 'phosphor-react'
 
-import { Product } from '../../contexts/CartProvider'
 import { useCart } from '../../hooks/useCart'
 import { QuantityInput } from '../Form/QuantityInput'
 
 import { ButtonAddCart, CardBox, Footer, Price, Tags } from './styled'
 
+interface Product {
+  id: string
+  title: string
+  description: string
+  tags: string[]
+  price: number
+  image: string
+}
 interface CardProps {
   coffee: Product
 }
@@ -36,6 +44,7 @@ export function Card({ coffee }: CardProps) {
     }
 
     addToCart(newItem)
+    toast.success('Produto adicionado ao carrinho')
     setQuantity(1)
   }
 

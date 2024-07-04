@@ -1,29 +1,15 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { OrderInfo } from '../pages/Cart'
-
-export interface Product {
-  id: string
-  title: string
-  description: string
-  tags: string[]
-  price: number
-  image: string
-}
-
-export interface Item {
-  id: string
-  title: string
-  quantity: number
-}
-
-export interface Order {
-  id: number
-  items: Item[]
-  order: OrderInfo
-}
+import {
+  addToCartAction,
+  checkoutAction,
+  decrementItemQuantityAction,
+  incrementItemQuantityAction,
+  removeFromCartAction,
+} from '../reducers/cart/actions'
+import { cartReducer, Item, Order } from '../reducers/cart/reducer'
 
 interface CartContextProps {
   cart: Item[]
@@ -42,86 +28,54 @@ interface CartContextProviderProps {
 export const CartContext = createContext({} as CartContextProps)
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [orders, setOrders] = useState<Order[]>([])
-  console.log(orders)
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    {
+      cart: [],
+      orders: [],
+    },
+    (initialState) => {
+      const storedCartAsJSON = localStorage.getItem(
+        '@coffee-delivery:cart-state-1.0.0',
+      )
 
-  const [cart, setCart] = useState<Item[]>(() => {
-    const storedCart = localStorage.getItem('@coffee-delivery:cart-state-1.0.0')
+      if (storedCartAsJSON) {
+        return JSON.parse(storedCartAsJSON)
+      }
 
-    if (storedCart) {
-      return JSON.parse(storedCart)
-    } else {
-      return []
-    }
-  })
+      return initialState
+    },
+  )
+
+  const { cart, orders } = cartState
 
   const navigate = useNavigate()
 
   function addToCart(item: Item) {
-    const itemAlreadyAdded = cart.find((itemCart) => itemCart.id === item.id)
-    const updateCart = [...cart]
-
-    if (itemAlreadyAdded) {
-      itemAlreadyAdded.quantity += item.quantity
-      setCart(updateCart)
-      toast.success(
-        `+ ${item.quantity} ${item.title} adicionado ao carrinho!`,
-        { duration: 4000 },
-      )
-    } else {
-      setCart((state) => [...state, item])
-      toast.success(
-        `+ ${item.quantity} ${item.title} adicionado ao carrinho!`,
-        { duration: 4000 },
-      )
-    }
+    dispatch(addToCartAction(item))
   }
 
-  function removeFromCart(itemId: string) {
-    const itemAlreadyRemoved = cart.filter((itemCart) => itemCart.id !== itemId)
-
-    setCart(itemAlreadyRemoved)
+  function removeFromCart(itemId: Item['id']) {
+    dispatch(removeFromCartAction(itemId))
   }
 
-  function incrementItemQuantity(itemId: string) {
-    const updateCart = [...cart]
-    const itemToIncrement = cart.find((item) => item.id === itemId)
-
-    if (itemToIncrement) {
-      itemToIncrement.quantity += 1
-      setCart(updateCart)
-    }
+  function incrementItemQuantity(itemId: Item['id']) {
+    dispatch(incrementItemQuantityAction(itemId))
   }
 
-  function decrementItemQuantity(itemId: string) {
-    const updateCart = [...cart]
-    const itemToDecrement = cart.find((item) => item.id === itemId)
-
-    if (itemToDecrement?.id) {
-      itemToDecrement.quantity -= 1
-      setCart(updateCart)
-    }
+  function decrementItemQuantity(itemId: Item['id']) {
+    dispatch(decrementItemQuantityAction(itemId))
   }
 
   function checkout(order: OrderInfo) {
-    const newOrder = {
-      id: new Date().getTime(),
-      items: cart,
-      order,
-    }
-
-    setOrders((state) => [...state, newOrder])
-    setCart([])
-
-    navigate(`/order/${newOrder.id}/success`)
+    dispatch(checkoutAction(order, navigate))
   }
 
   useEffect(() => {
-    localStorage.setItem(
-      '@coffee-delivery:cart-state-1.0.0',
-      JSON.stringify(cart),
-    )
-  }, [cart])
+    const stateJSON = JSON.stringify(cartState)
+
+    localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON)
+  }, [cartState])
 
   return (
     <CartContext.Provider

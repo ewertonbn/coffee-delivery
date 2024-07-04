@@ -10,7 +10,8 @@ export const HeroSection = styled.section`
     position: absolute;
     inset: 0;
     margin: auto;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
     max-height: 800px;
     object-fit: cover;
     z-index: -1;
