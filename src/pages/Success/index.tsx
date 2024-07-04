@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
+import { CurrencyDollar, MapPin, ShoppingCart, Timer } from 'phosphor-react'
 import { useTheme } from 'styled-components'
 
 import deliveryImg from '../../../public/images/delivery.svg'
@@ -57,6 +57,9 @@ export function Success() {
                   {orderData?.order.neighborhood} - {orderData?.order.city},{' '}
                   {orderData?.order.state}
                 </span>
+                {orderData?.order.fullAddress && (
+                  <small>{orderData?.order.fullAddress}</small>
+                )}
               </div>
             </div>
             <div>
@@ -86,6 +89,26 @@ export function Success() {
                     {paymentMethod[orderData?.order.paymentMethod]}
                   </strong>
                 </span>
+              </div>
+            </div>
+            <div>
+              <ShoppingCart
+                weight="fill"
+                color={theme.colors.white}
+                style={{ backgroundColor: theme.colors['yellow-dark'] }}
+                size={32}
+              />
+              <div>
+                <span>Resumo do pedido</span>
+                <ul>
+                  {orderData?.items.map((item) => {
+                    return (
+                      <li key={item.id}>
+                        {item.quantity} {item.title}
+                      </li>
+                    )
+                  })}
+                </ul>
               </div>
             </div>
           </BoxContent>

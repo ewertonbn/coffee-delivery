@@ -50,6 +50,18 @@ export const BoxContent = styled.div`
       padding: 0.5rem;
       border-radius: 100%;
     }
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      column-gap: 1.5rem;
+
+      li {
+        ${mixins.fonts.textXS}
+        font-weight: normal;
+        list-style: inside;
+      }
+    }
   }
 
   > div div {
