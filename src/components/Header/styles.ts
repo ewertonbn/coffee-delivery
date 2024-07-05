@@ -4,11 +4,15 @@ import styled from 'styled-components'
 import { mixins } from '../../styles/mixins'
 
 export const Container = styled.header`
-  padding: 2rem 0;
+  padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 10;
   background: ${(props) => props.theme.colors.background};
+
+  @media (min-width: 768px) {
+    padding: 2rem 0;
+  }
 
   & > div {
     max-width: 72.5rem;

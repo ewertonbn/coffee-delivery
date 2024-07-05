@@ -7,7 +7,20 @@ export const Container = styled.main`
   margin: 5rem auto;
   padding: 0 1.25rem;
   display: flex;
-  gap: 6.375rem;
+  flex-wrap: wrap;
+
+  @media (min-width: 768px) {
+    flex-wrap: nowrap;
+    gap: 6.375rem;
+  }
+
+  & > img {
+    display: none;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
+  }
 `
 
 export const Content = styled.div`
@@ -18,7 +31,12 @@ export const Content = styled.div`
   }
 
   p {
-    ${mixins.fonts.textL}
+    ${mixins.fonts.textXS}
+    font-weight: normal;
+
+    @media (min-width: 768px) {
+      ${mixins.fonts.textL}
+    }
   }
 `
 
@@ -34,12 +52,16 @@ export const Box = styled.div`
 `
 
 export const BoxContent = styled.div`
-  padding: 2.5rem;
+  padding: 1rem;
   border-radius: 6px 36px;
   background: ${(props) => props.theme.colors.background};
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media (min-width: 768px) {
+    padding: 2.5rem;
+  }
 
   & > div {
     display: flex;
@@ -47,8 +69,16 @@ export const BoxContent = styled.div`
     gap: 0.75rem;
 
     svg {
-      padding: 0.5rem;
+      padding: 0.25rem;
       border-radius: 100%;
+      max-width: 20px;
+      max-height: 20px;
+
+      @media (min-width: 768px) {
+        padding: 0.5rem;
+        max-width: none;
+        max-height: none;
+      }
     }
 
     ul {

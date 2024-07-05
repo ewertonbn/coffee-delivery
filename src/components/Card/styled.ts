@@ -5,27 +5,46 @@ import { mixins } from '../../styles/mixins'
 export const CardBox = styled.div`
   background: ${(props) => props.theme.colors['base-card']};
   border-radius: 0.375rem 2.25rem 0.375rem 2.25rem;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  @media (min-width: 768px) {
+    padding: 1.25rem 1.5rem;
+  }
+
   img {
     margin-top: -2.5rem;
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 3.75rem;
+    height: 3.75rem;
+
+    @media (min-width: 1024px) {
+      width: 7.5rem;
+      height: 7.5rem;
+    }
   }
 
   h3 {
-    ${mixins.fonts.titleS}
+    ${mixins.fonts.textXS}
     color: ${(props) => props.theme.colors['base-subtitle']};
     margin-bottom: 0.5rem;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      ${mixins.fonts.titleS}
+    }
   }
 
   p {
-    ${mixins.fonts.textS}
+    ${mixins.fonts.textXS}
+    font-weight: normal;
     text-align: center;
     color: ${(props) => props.theme.colors['base-label']};
+
+    @media (min-width: 768px) {
+      ${mixins.fonts.textS}
+    }
   }
 `
 
@@ -59,11 +78,17 @@ export const Price = styled.strong`
 
 export const Footer = styled.div`
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
   gap: 1.375rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    margin-top: 2rem;
+  }
 
   & > div {
     display: flex;

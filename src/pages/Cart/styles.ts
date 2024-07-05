@@ -7,10 +7,17 @@ export const Container = styled.main`
   margin: 2.5rem auto;
   padding: 0 1.25rem;
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
 `
 
 export const InfoContainer = styled.div`
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
+
   h2 {
     ${mixins.fonts.titleXS}
     color: ${(props) => props.theme.colors['base-subtitle']};
@@ -25,9 +32,12 @@ export const DefaultContainer = styled.div`
 
 export const AddressContainer = styled(DefaultContainer)`
   width: 100%;
-  min-width: 40rem;
   margin-bottom: 0.75rem;
   border-radius: 6px;
+
+  @media (min-width: 768px) {
+    min-width: 40rem;
+  }
 `
 
 export const Heading = styled.div`
@@ -53,14 +63,20 @@ export const AddressHeading = styled(Heading)`
 `
 
 export const AddressForm = styled.div`
-  display: grid;
-  grid-template-areas:
-    'cep . .'
-    'street street street'
-    'number fullAddress fullAddress'
-    'neighborhood city state';
-  grid-template-columns: 200px 1fr 60px;
-  grid-gap: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-gap: 16px 12px;
+    grid-template-areas:
+      'cep . .'
+      'street street street'
+      'number fullAddress fullAddress'
+      'neighborhood city state';
+    grid-template-columns: 200px 1fr 60px;
+  }
 `
 
 export const PaymentContainer = styled(DefaultContainer)`
@@ -77,7 +93,12 @@ export const PaymentOptions = styled.div`
   & > div {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 0.75rem;
+
+    @media (min-width: 768px) {
+      flex-wrap: nowrap;
+    }
   }
 `
 
@@ -90,8 +111,11 @@ export const PaymentErrorMessage = styled.p`
 
 export const CartTotal = styled(DefaultContainer)`
   width: 100%;
-  min-width: 28rem;
   border-radius: 6px 44px 6px 44px;
+
+  @media (min-width: 768px) {
+    min-width: 28rem;
+  }
 `
 
 export const Empty = styled.div`
@@ -122,7 +146,12 @@ export const CoffeeList = styled.div`
 
   &::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
     border-radius: 5px;
+
+    @media (min-width: 768px) {
+      height: auto;
+    }
   }
 
   &::-webkit-scrollbar-track {

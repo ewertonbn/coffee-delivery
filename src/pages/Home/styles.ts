@@ -3,8 +3,13 @@ import styled from 'styled-components'
 import { mixins } from '../../styles/mixins'
 
 export const HeroSection = styled.section`
-  padding: 5.75rem 0;
+  padding: 1.5rem 0;
   position: relative;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding: 5.75rem 0;
+  }
 
   img#hero-bg {
     position: absolute;
@@ -18,33 +23,57 @@ export const HeroSection = styled.section`
   }
 `
 
-export const HeroContainer = styled.section`
+export const HeroContainer = styled.div`
   max-width: 72.5rem;
   margin: 0 auto;
   padding: 0 1.25rem;
   display: grid;
-  grid-template-columns: 36.875rem 1fr;
-  gap: 3.5rem;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 36.875rem 1fr;
+    gap: 3.5rem;
+  }
+
+  & > img {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
 `
 
 export const HeroContent = styled.div`
   h1 {
     margin-bottom: 1rem;
     color: ${(props) => props.theme.colors['base-title']};
-    ${mixins.fonts.titleXL}
+    ${mixins.fonts.titleL}
+
+    @media (min-width: 768px) {
+      ${mixins.fonts.titleXL}
+    }
   }
 
   & > p {
-    ${mixins.fonts.textL}
+    ${mixins.fonts.textS}
+
+    @media (min-width: 768px) {
+      ${mixins.fonts.textL}
+    }
   }
 `
 
 export const HeroList = styled.ul`
-  margin-top: 4.125rem;
+  margin-top: 2rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   row-gap: 1.25rem;
   column-gap: 2.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 4.125rem;
+  }
 `
 
 const VARIANT_COLORS = {
@@ -88,15 +117,29 @@ export const CoffeeList = styled.section`
   padding: 2rem 1.25rem 9.8125rem;
 
   h2 {
-    ${mixins.fonts.titleL}
+    ${mixins.fonts.titleM}
     color: ${(props) => props.theme.colors['base-subtitle']};
+
+    @media (min-width: 768px) {
+      ${mixins.fonts.titleL}
+    }
   }
 
   & > div {
     margin-top: 2.125rem;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    row-gap: 2.5rem;
-    column-gap: 2rem;
+    grid-template-columns: 50% 50%;
+    row-gap: 3.5rem;
+    column-gap: 0.5rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: 2.5rem;
+      column-gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 `
